@@ -1,6 +1,6 @@
 import { parseQuery } from '../src/parseQuery/parseQuery';
 
-describe('parseQuery query-test', () => {
+describe('normal test', () => {
     test('query1', () => {
         const query = 'select col1 from t1';
 
@@ -10,5 +10,16 @@ describe('parseQuery query-test', () => {
         // （１件でも）配列であること
         expect(Array.isArray(ret)).toBeTruthy();
         expect(ret.length).toBe(1);
+    });
+});
+
+describe('abnormal test', () => {
+    test('query1', () => {
+        const query = 'select col1 form t1';    // fromがformになっている誤り
+        
+        // 実行
+        expect(() => {
+            parseQuery({query});
+        }).toThrow(Error);
     });
 });
