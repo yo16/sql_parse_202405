@@ -4,15 +4,16 @@
 - テーブル間・列間の関係性を持つ
 */
 
-import { SqlLineageParserParams } from './types/sql-parser-202405';
+import { SqlLineageParserParams } from './types/types';
 import { parseQuery } from './parseQuery/parseQuery';
+import { astList2TableList } from './astList2TableList/astList2TableList';
 
 function SqlLineageParser ({query, database = 'BigQuery'}: SqlLineageParserParams): void {
     // node-sql-parserを利用して結果を得る
-    const astArray = parseQuery({query, database});
+    const astList = parseQuery({query, database});
 
     // テーブル単位の配列に変換する
-    // ast2TableArray()
+    const tableList = astList2TableList({astList});
 
     // 関係性を構築する
     // analyzeConnections()

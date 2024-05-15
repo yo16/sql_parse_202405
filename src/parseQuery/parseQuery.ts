@@ -2,7 +2,7 @@
 
 import { Parser, Option as NSPOption, AST } from 'node-sql-parser';
 
-import { parseQueryParams } from '../types/sql-parser-202405';
+import { parseQueryParams } from '../types/types.d';
 
 // node-sql-parser instance
 const parser = new Parser();
@@ -21,10 +21,10 @@ export function parseQuery({ query, database = 'BigQuery' }: parseQueryParams): 
         } else {
             ast = [ret.ast];
         }
-        console.log(ast);
+        //console.log(ast);
     } catch(e: unknown) {
-        console.error('Error at Parser.parse().');
-        console.error('e.message');
+        //console.error('Error at Parser.parse().');
+        //console.error('e.message');
         if ( e instanceof Error ){
             throw new Error(`Error in Parsing-Process: ${e.message}`);
         } else {
@@ -36,4 +36,4 @@ export function parseQuery({ query, database = 'BigQuery' }: parseQueryParams): 
 }
 
 // for debug
-//parseQuery({query: 'select col1 from t1'});
+parseQuery({query: 'select col1 from t1'});

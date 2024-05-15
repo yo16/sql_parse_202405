@@ -135,9 +135,10 @@
     "no-unused-vars": [
       2,
       {
-        "argsIgnorePattern": "next|receiver"
+        "argsIgnorePattern": "^_|next|receiver"
       }
     ],
+    "@typescript-eslint/no-unused-vars": "off",
     "import/no-dynamic-require": 0,
     "import/no-cycle": 0,
     "import/prefer-default-export": 0,
