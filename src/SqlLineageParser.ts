@@ -4,7 +4,7 @@
 - テーブル間・列間の関係性を持つ
 */
 
-import { SqlLineageParserParams } from './types/types';
+import { SqlLineageParserParams } from './types/types.d';
 import { parseQuery } from './parseQuery/parseQuery';
 import { astList2TableList } from './astList2TableList/astList2TableList';
 
