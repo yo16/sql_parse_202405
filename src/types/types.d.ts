@@ -32,4 +32,7 @@ export interface parseAstParams {
     ast: AST;
     isTopQuery: boolean;
 }
+export interface parseAstFunction {
+    (_param: parseAstParams): ParsedTable[];
+}
 

@@ -1,7 +1,7 @@
 import { parseQuery } from '../src/parseQuery/parseQuery';
 
 describe('normal test', () => {
-    test('query1', () => {
+    test('normal query1', () => {
         const query = 'select col1 from t1';
 
         // 実行
@@ -14,7 +14,7 @@ describe('normal test', () => {
 });
 
 describe('abnormal test', () => {
-    test('query1', () => {
+    test('abnormal query1', () => {
         const query = 'select col1 form t1';    // fromがformになっている誤り
         
         // 実行
