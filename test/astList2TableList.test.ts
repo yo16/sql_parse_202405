@@ -5,7 +5,7 @@ import * as pSelA from '../src/astList2TableList/parseSelectAst';
 import * as pInsA from '../src/astList2TableList/parseInsertAst'; 
 
 
-describe('ast2TableList test!', () => {
+describe('ast2TableList test', () => {
     beforeEach(() => {
         // テストの前にスタブをリセット
         jest.resetAllMocks();
@@ -16,7 +16,7 @@ describe('ast2TableList test!', () => {
         /* eslint-disable no-unused-vars */
         const fn = ({name, ast, isTopQuery}:parseAstParams) => {
             return [{
-                name: 'test',
+                tableName: 'test',
             }] as ParsedTable[];
         };
         /* eslint-enable no-unused-vars */
@@ -41,7 +41,7 @@ describe('ast2TableList test!', () => {
         });
         expect(Array.isArray(result)).toBeTruthy();
         expect(result.length).toBe(1);
-        expect(result[0].name).toBe('__top__');
+        expect(result[0].tableName).toBe('__top__');
     });
 
     test('insert 1, ', () => {
@@ -49,7 +49,7 @@ describe('ast2TableList test!', () => {
         /* eslint-disable no-unused-vars */
         const fn = ({name, ast, isTopQuery}:parseAstParams) => {
             return [{
-                name: 'test',
+                tableName: 'test',
             }] as ParsedTable[];
         };
         /* eslint-enable no-unused-vars */
@@ -74,7 +74,7 @@ describe('ast2TableList test!', () => {
         });
         expect(Array.isArray(result)).toBeTruthy();
         expect(result.length).toBe(1);
-        expect(result[0].name).toBe('__top__');
+        expect(result[0].tableName).toBe('__top__');
     });
 
     test('未定義のtypeの場合はErrorがthrowされる', () => {

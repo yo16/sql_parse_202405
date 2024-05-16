@@ -1,6 +1,21 @@
 // Type definitisions for sql-parser-202405
+/* eslint-disable no-unused-vars */
 
-import { AST } from 'node-sql-parser';
+import { AST, ExpressionValue } from 'node-sql-parser';
+
+// 解析後の列レベルの情報
+export type ParsedColumn = {
+    tableName: string;
+    columnName: string;
+    fromColumns: ParsedColumn[];
+}
+// 解析後のテーブルレベルの情報
+// ParsedColumnを内包する
+export type ParsedTable = {
+    tableName: string;
+    columns: ParsedColumn[];
+};
+
 
 export interface SqlLineageParserParams {
     query: string;
@@ -17,10 +32,6 @@ export interface parseQueryParams {
 export interface astList2TableListParams {
     astList: AST[];
 }
-export type ParsedTable = {
-    name: string;
-    // ほかも追加予定
-};
 export interface ast2TableListParams {
     ast: AST;
     name?: string | null;
@@ -33,6 +44,11 @@ export interface parseAstParams {
     isTopQuery: boolean;
 }
 export interface parseAstFunction {
-    (_param: parseAstParams): ParsedTable[];
+    (param: parseAstParams): ParsedTable[];
 }
 
+export interface parseAstExpressionValueFunction {
+    (expr: ExpressionValue | Expr | ExprList): ParsedColumn[];
+}
+
+/* eslint-enable no-unused-vars */
