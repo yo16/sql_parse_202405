@@ -3,7 +3,7 @@ import type { From } from "node-sql-parser";
 
 import { astParseFn } from './parseAst';
 import type { ParsedTable, ParsedColumn, TableColumnName } from "@src/types/types.d";
-import { parseAstExpressionValueFn } from "./parseAstColumns";
+import { parseAstExpressionValueFn } from "./parseAstExpr";
 
 // From句を解析して、テーブル定義を返す
 export function parseAstFrom(astFromArray: From[] | null): ParsedTable[] {
