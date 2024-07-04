@@ -1,4 +1,5 @@
 // SQLの構造形式になっているASTを、テーブル単位の配列に変換する
+// 具体的にはParsedTableの配列
 
 import { AST } from 'node-sql-parser';
 

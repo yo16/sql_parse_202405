@@ -4,11 +4,17 @@
 import { AST, ExpressionValue } from 'node-sql-parser';
 
 // 解析後の列レベルの情報
+// fromColumnsをParsedColumn[]とすると、子孫たちは各々ですべての先祖を持たないといけなくなる
 export type ParsedColumn = {
-    tableName: string;
-    columnName: string;
-    fromColumns: ParsedColumn[];
+    currentColumnName: string;
+    fromColumns: TableColumnName[];
 }
+// 名前の部分
+export type TableColumnName = {
+    tableName: string | null;
+    columnName: string | null;
+}
+
 // 解析後のテーブルレベルの情報
 // ParsedColumnを内包する
 export type ParsedTable = {
@@ -47,8 +53,10 @@ export interface parseAstFunction {
     (param: parseAstParams): ParsedTable[];
 }
 
+// ExpressionValueを調べて、そのもととなっている列の配列を返す
+// ParsedColumn.fromColumns へ設定されるべき値を返す
 export interface parseAstExpressionValueFunction {
-    (expr: ExpressionValue | Expr | ExprList): ParsedColumn[];
+    (expr: ExpressionValue | Expr | ExprList): TableColumnName[];
 }
 
 /* eslint-enable no-unused-vars */

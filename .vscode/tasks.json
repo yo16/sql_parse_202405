@@ -2,6 +2,12 @@
     "version": "2.0.0",
     "tasks": [
       {
+        "label": "clean",
+        "type": "shell",
+        "command": "npx rimraf dist",
+        "problemMatcher": []
+      },
+      {
         "label": "tsc: build - tsconfig.json",
         "type": "typescript",
         "tsconfig": "tsconfig.json",
@@ -10,6 +16,11 @@
           "kind": "build",
           "isDefault": true
         }
+      },
+      {
+        "label": "cleanAndBuild",
+        "dependsOn": ["clean", "tsc: build - tsconfig.json"],
+        "problemMatcher": []
       }
     ]
 }

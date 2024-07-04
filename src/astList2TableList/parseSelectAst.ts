@@ -1,6 +1,6 @@
 import { Select } from 'node-sql-parser';
 import { parseAstParams, ParsedTable, ParsedColumn, parseAstFunction } from '../types/types.d';
-import { parseColumns } from './parseAstUtils';
+import { parseColumns } from './parseAstColumns';
 
 
 export const parseSelectAst: parseAstFunction = ({name, ast, isTopQuery}: parseAstParams): ParsedTable[] => {
@@ -10,11 +10,17 @@ export const parseSelectAst: parseAstFunction = ({name, ast, isTopQuery}: parseA
     // astはSelect
     const astSel: Select = ast as Select;
 
-    // astのColumnを解析
+    // astのcolumnを解析
     const columns: ParsedColumn[] = parseColumns(astSel.columns);
+
+    // astのfromを解析
+    // よてい
+
+    // astのwithを解析
+    // よてい
 
     return [{
         tableName,
-        columns: [],    // 追加予定
+        columns: columns,    // 追加予定
     }];
 };

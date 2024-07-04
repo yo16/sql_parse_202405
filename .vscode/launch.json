@@ -13,7 +13,7 @@
             ],
             //"program": "${workspaceFolder}\\src\\index.ts",
             "program": "${file}",
-            "preLaunchTask": "tsc: build - tsconfig.json",
+            "preLaunchTask": "cleanAndBuild",
             "outFiles": [
                 "${workspaceFolder}/dist/**/*.js"
             ]
