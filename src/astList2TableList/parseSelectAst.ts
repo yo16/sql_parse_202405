@@ -17,7 +17,7 @@ export const parseSelectAst: parseAstFunction = ({name, ast, isTopQuery}: parseA
     // よてい
 
     // astのwithを解析
-    // よてい
+    
 
     return [{
         tableName,
