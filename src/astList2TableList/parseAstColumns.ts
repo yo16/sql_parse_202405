@@ -1,7 +1,7 @@
 import { Column, ExpressionValue, Expr, ExprList, Case, Cast, ColumnRef, Function as NSPFunction } from 'node-sql-parser';
 import { ParsedColumn, parseAstExpressionValueFunction } from '../types/types.d';
 import type { TableColumnName } from '../types/types.d';
-import { isColumn } from '../types/types';
+//import { isColumn } from '../types/types';
 
 // 列群を解析
 /* eslint-disable @typescript-eslint/no-explicit-any */
