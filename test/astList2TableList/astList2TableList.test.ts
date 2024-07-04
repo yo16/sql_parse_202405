@@ -44,7 +44,7 @@ describe(desc, () => {
             ast: testAst as AST,
         });
         expect(Array.isArray(result)).toBeTruthy();
-        expect(result.length).toBe(1);
+        expect(result.length).toBe(2);  // selectとfrom
         expect(result[0].tableName).toBe('__top__');
     });
 
