@@ -404,9 +404,462 @@ describe(desc, () => {
         // astのテスト
         expect(ret.ast[0]).toMatchObject(expectedAst0);
     });
+});
+
+desc = `${TEST_NAME}_OK_FROM`;
+describe(desc, () => {
+    test(`${desc}: base table`, () => {
+        const query = 'select t2.col1 as col2 from t1 as t2';
+        const expectedAst0 = {
+            columns: [
+                {
+                    as: 'col2',
+                    expr: {
+                        type: 'column_ref',
+                        table: 't2',
+                        column: 'col1',
+                    },
+                },
+            ],
+            from: [
+                {
+                    db: null,
+                    table: 't1',
+                    as: 't2',
+                }
+            ],
+            with: null,
+        };
+
+        // 実行
+        const ret = parseQuery({query});
+
+        // astのテスト
+        expect(ret.ast[0]).toMatchObject(expectedAst0);
+    });
 
 
-    test(`${desc}: query5 with`, () => {
+    test(`${desc}: join using`, () => {
+        const query = 'select t2.col1 as col2 from t1 as t2 inner join t3 using (col3, col4)';
+        const expectedAst0 = {
+            columns: [
+                {
+                    as: 'col2',
+                    expr: {
+                        type: 'column_ref',
+                        table: 't2',
+                        column: 'col1',
+                    },
+                },
+            ],
+            from: [
+                {
+                    db: null,
+                    table: 't1',
+                    as: 't2',
+                },
+                {
+                    db: null,
+                    table: 't3',
+                    as: null,
+                    join: 'INNER JOIN',
+                    using: [
+                        'col3',
+                        'col4',
+                    ]
+                },
+            ],
+            with: null,
+        };
+
+        // 実行
+        const ret = parseQuery({query});
+
+        // astのテスト
+        expect(ret.ast[0]).toMatchObject(expectedAst0);
+    });
+
+
+    test(`${desc}: join on`, () => {
+        const query = 'select t2.col1 as col2 from t1 inner join t2 on t1.col3 = t2.col4 and t1.col5 = t2.col6 and t1.col7 = t2.col8';
+        const expectedAst0 = {
+            columns: [
+                {
+                    as: 'col2',
+                    expr: {
+                        type: 'column_ref',
+                        table: 't2',
+                        column: 'col1',
+                    },
+                },
+            ],
+            from: [
+                {
+                    db: null,
+                    table: 't1',
+                    as: null,
+                },
+                {
+                    db: null,
+                    table: 't2',
+                    as: null,
+                    on: {
+                        type: 'binary_expr',
+                        operator: 'AND',
+                        left: {
+                            type: 'binary_expr',
+                            operator: 'AND',
+                            left: {
+                                type: 'binary_expr',
+                                operator: '=',
+                                left: {
+                                    type: 'column_ref',
+                                    table: 't1',
+                                    column: 'col3'
+                                },
+                                right: {
+                                    type: 'column_ref',
+                                    table: 't2',
+                                    column: 'col4',
+                                },
+                            },
+                            right: {
+                                type: 'binary_expr',
+                                operator: '=',
+                                left: {
+                                    type: 'column_ref',
+                                    table: 't1',
+                                    column: 'col5',
+                                },
+                                right: {
+                                    type: 'column_ref',
+                                    table: 't2',
+                                    column: 'col6',
+                                },
+                            },
+                        },
+                        right: {
+                            type: 'binary_expr',
+                            operator: '=',
+                            left: {
+                                type: 'column_ref',
+                                table: 't1',
+                                column: 'col7',
+                            },
+                            right: {
+                                type: 'column_ref',
+                                table: 't2',
+                                column: 'col8',
+                            },
+                        },
+                    },
+                },
+            ],
+            with: null,
+        };
+
+        // 実行
+        const ret = parseQuery({query});
+
+        // astのテスト
+        expect(ret.ast[0]).toMatchObject(expectedAst0);
+    });
+
+
+    test(`${desc}: 1 from table`, () => {
+        const query = 'select t1.col1 from (select t2.col2 as col1 from t2) as t1';
+        const expectedAst0 = {
+            columns: [
+                {
+                    as: null,
+                    expr: {
+                        type: 'column_ref',
+                        table: 't1',
+                        column: 'col1',
+                    },
+                },
+            ],
+            from: [
+                {
+                    as: 't1',
+                    expr: {
+                        ast: {
+                            type: 'select',
+                            columns: [
+                                {
+                                    as: 'col1',
+                                    expr: {
+                                        type: 'column_ref',
+                                        table: 't2',
+                                        column: 'col2',
+                                    },
+                                },
+                            ],
+                            from: [
+                                {
+                                    as: null,
+                                    db: null,
+                                    operator: null,
+                                    table: 't2',
+                                },
+                            ],
+                        }
+                    }
+                }
+            ],
+            with: null,
+        };
+
+        // 実行
+        const ret = parseQuery({query});
+
+        // astのテスト
+        expect(ret.ast[0]).toMatchObject(expectedAst0);
+    });
+    
+
+    test(`${desc}: 2 from tables`, () => {
+        const query = 'select t1.col1, t3.col3 from (select t2.col2 as col1 from t2) as t1, (select t4.col4 as col3 from t4) as t3';
+        const expectedAst0 = {
+            columns: [
+                {
+                    as: null,
+                    expr: {
+                        type: 'column_ref',
+                        table: 't1',
+                        column: 'col1',
+                    },
+                },
+                {
+                    as: null,
+                    expr: {
+                        type: 'column_ref',
+                        table: 't3',
+                        column: 'col3',
+                    },
+                },
+            ],
+            from: [
+                {
+                    as: 't1',
+                    expr: {
+                        ast: {
+                            type: 'select',
+                            columns: [
+                                {
+                                    as: 'col1',
+                                    expr: {
+                                        type: 'column_ref',
+                                        table: 't2',
+                                        column: 'col2',
+                                    },
+                                },
+                            ],
+                            from: [
+                                {
+                                    as: null,
+                                    db: null,
+                                    operator: null,
+                                    table: 't2',
+                                },
+                            ],
+                        }
+                    }
+                },
+                {
+                    as: 't3',
+                    expr: {
+                        ast: {
+                            type: 'select',
+                            columns: [
+                                {
+                                    as: 'col3',
+                                    expr: {
+                                        type: 'column_ref',
+                                        table: 't4',
+                                        column: 'col4',
+                                    },
+                                },
+                            ],
+                            from: [
+                                {
+                                    as: null,
+                                    db: null,
+                                    operator: null,
+                                    table: 't4',
+                                },
+                            ],
+                        }
+                    }
+                },
+            ],
+            with: null,
+        };
+
+        // 実行
+        const ret = parseQuery({query});
+
+        // astのテスト
+        expect(ret.ast[0]).toMatchObject(expectedAst0);
+    });
+
+
+    test(`${desc}: TableExpr noname`, () => {
+        const query = 'select col1 from (select col2 as col1 from t1)';
+        const expectedAst0 = {
+            columns: [
+                {
+                    as: null,
+                    expr: {
+                        type: 'column_ref',
+                        table: null,
+                        column: 'col1',
+                    },
+                },
+            ],
+            from: [
+                {
+                    as: null,
+                    expr: {
+                        ast: {
+                            type: 'select',
+                            columns: [
+                                {
+                                    as: 'col1',
+                                    expr: {
+                                        type: 'column_ref',
+                                        table: null,
+                                        column: 'col2',
+                                    },
+                                },
+                            ],
+                            from: [
+                                {
+                                    as: null,
+                                    db: null,
+                                    operator: null,
+                                    table: 't1',
+                                },
+                            ],
+                        }
+                    }
+                },
+            ],
+            with: null,
+        };
+
+        // 実行
+        const ret = parseQuery({query});
+
+        // astのテスト
+        expect(ret.ast[0]).toMatchObject(expectedAst0);
+    });
+
+
+    test(`${desc}: TableExpr multi noname talbes`, () => {
+        const query = 'with tw1 as (select t1_col2 from (select col2 as t1_col2 from t1)) select tw1_col2 from (select t1_col2 as tw1_col2 from tw1)';
+        const expectedAst0 = {
+            columns: [
+                {
+                    as: null,
+                    expr: {
+                        type: 'column_ref',
+                        table: null,
+                        column: 'tw1_col2',
+                    },
+                },
+            ],
+            from: [
+                {
+                    as: null,
+                    expr: {
+                        ast: {
+                            type: 'select',
+                            columns: [
+                                {
+                                    as: 'tw1_col2',
+                                    expr: {
+                                        type: 'column_ref',
+                                        table: null,
+                                        column: 't1_col2',
+                                    },
+                                },
+                            ],
+                            from: [
+                                {
+                                    as: null,
+                                    db: null,
+                                    operator: null,
+                                    table: 'tw1',
+                                },
+                            ],
+                        }
+                    }
+                },
+            ],
+            with: [
+                {
+                    name: {
+                        type: 'default',
+                        value: 'tw1',
+                    },
+                    stmt: {
+                        ast: {
+                            type: 'select',
+                            columns: [
+                                {
+                                    as: null,
+                                    expr: {
+                                        type: 'column_ref',
+                                        table: null,
+                                        column: 't1_col2',
+                                    },
+                                }
+                            ],
+                            from: [
+                                {
+                                    as: null,
+                                    expr: {
+                                        ast: {
+                                            type: 'select',
+                                            columns: [
+                                                {
+                                                    as: 't1_col2',
+                                                    expr: {
+                                                        type: 'column_ref',
+                                                        table: null,
+                                                        column: 'col2',
+                                                    },
+                                                },
+                                            ],
+                                            from: [
+                                                {
+                                                    as: null,
+                                                    db: null,
+                                                    table: 't1',
+                                                },
+                                            ],
+                                        },
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                },
+            ],
+        };
+
+        // 実行
+        const ret = parseQuery({query});
+
+        // astのテスト
+        expect(ret.ast[0]).toMatchObject(expectedAst0);
+    });
+});
+
+desc = `${TEST_NAME}_OK_WITH`;
+describe(desc, () => {
+    test(`${desc}: 1 with`, () => {
         const query = 'with t2 as (select t3.col3 as t3_col3 from t3) select t1.col1 as col_a, t2.t3_col3 as col_b from t1_origin as t1, t2';
         const expectedAst0 = {
             columns: [
@@ -478,7 +931,7 @@ describe(desc, () => {
     });
 
 
-    test(`${desc}: query5 two withs`, () => {
+    test(`${desc}: two withs`, () => {
         const query = 'with t3 as (select t4.col4 as col3 from t4), ' + 
             't2 as (select t3.col3 as t3_col3 from t3) ' +
             'select t1.col1 as col_a, t2.t3_col3 as col_b from t1_origin as t1, t2';

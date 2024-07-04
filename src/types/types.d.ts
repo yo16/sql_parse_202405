@@ -17,8 +17,10 @@ export type TableColumnName = {
 
 // 解析後のテーブルレベルの情報
 // ParsedColumnを内包する
+// columnsの中では、テーブルをasのテーブル名で呼んでいるかもしれない
 export type ParsedTable = {
     tableName: string;
+    tableNameAs?: string | null;
     columns: ParsedColumn[];
 };
 

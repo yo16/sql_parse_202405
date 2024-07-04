@@ -1,6 +1,7 @@
 import { Select } from 'node-sql-parser';
 import { parseAstParams, ParsedTable, ParsedColumn, parseAstFunction } from '../types/types.d';
 import { parseColumns } from './parseAstColumns';
+import { parseAstFrom } from './parseAstFrom';
 import { parseAstWith } from './parseAstWith';
 
 
@@ -19,7 +20,7 @@ export const parseSelectAst: parseAstFunction = ({name, ast, isTopQuery}: parseA
     );
 
     // astのfromを解析
-    // よてい
+    tables = tables.concat(parseAstFrom(astSel.from));
 
     // astのwithを解析
     tables = tables.concat(parseAstWith(astSel.with));

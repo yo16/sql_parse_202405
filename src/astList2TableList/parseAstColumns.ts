@@ -185,7 +185,7 @@ const parseExpressionValueString: parseAstExpressionValueFunction = (expr: Expre
 };
 /* eslint-enable no-unused-vars */
 /* eslint-disable key-spacing */
-const parseAstExpressionValueFn: Record<string, parseAstExpressionValueFunction> = {
+export const parseAstExpressionValueFn: Record<string, parseAstExpressionValueFunction> = {
     // type ExpressionValue
     'column_ref'        : parseExpressionValueColumn_ref,
     'param'               : parseExpressionValueParam,
