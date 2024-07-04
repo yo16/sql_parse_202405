@@ -5,7 +5,7 @@ import type { TableColumnName } from '../types/types.d';
 
 // 列群を解析
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export function parseColumns(astColumns: any[] | Column[]): ParsedColumn[] {
+export function parseAstColumns(astColumns: any[] | Column[]): ParsedColumn[] {
 /* eslint-enable @typescript-eslint/no-explicit-any */
     return astColumns.reduce((parsedCols, curCol) => {
         const curParsedCol = parseSingleColumn(curCol);
