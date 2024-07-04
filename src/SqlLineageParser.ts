@@ -31,14 +31,12 @@ export {
 //SqlLineageParser({query: 'select col1 from t1'});
 //SqlLineageParser({query: 'select cast(col1 as float64) from t1'});
 //SqlLineageParser({query: 'select case col1 when 1 then "one" when 2 then "two" else "else" end from t1'});
-SqlLineageParser({query: 'select case when col1 = 1 then "one" when col1 between 2 and 3 then "two-three" else col2 end from t1'});
+//SqlLineageParser({query: 'select case when col1 = 1 then "one" when col1 between 2 and 3 then "two-three" else col2 end from t1'});
 //SqlLineageParser({query: 'select case when col1 is null then "null" when col1 in (1,2) then "one_or_tow" when col1 like "3%" then "like3" else "else" end from t1'});
-
-
 //SqlLineageParser({query: 'select t1.* from db1.t1_origin as t1'});
 //SqlLineageParser({query: 'select t1.col1 as t1_col1, t2.col2 as t2_col2 from db1.t1_origin as t1, db2.t2_origin as t2 where t1.col1=t2.col2'});
 //SqlLineageParser({query: 'with t2 as (select t3.col3 as t3_col3 from t3) select t1.col1 as col_a, t2.t3_col3 as col_b from t1_origin as t1, t2'});
-//SqlLineageParser({query: 'with t3 as (select t4.col4 as col3 from t4), t2 as (select t3.col3 as t3_col3 from t3) select t1.col1 as col_a, t2.t3_col3 as col_b from t1_origin as t1, t2'});
+SqlLineageParser({query: 'with t3 as (select t4.col4 as col3 from t4), t2 as (select t3.col3 as t3_col3 from t3) select t1.col1 as col_a, t2.t3_col3 as col_b from t1_origin as t1, t2'});
 
 
 // 試行用

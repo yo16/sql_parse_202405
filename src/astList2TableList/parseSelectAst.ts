@@ -1,26 +1,28 @@
 import { Select } from 'node-sql-parser';
 import { parseAstParams, ParsedTable, ParsedColumn, parseAstFunction } from '../types/types.d';
 import { parseColumns } from './parseAstColumns';
+import { parseAstWith } from './parseAstWith';
 
 
 export const parseSelectAst: parseAstFunction = ({name, ast, isTopQuery}: parseAstParams): ParsedTable[] => {
-    // テーブル名
-    const tableName: string = name;
+    // このクエリから抽出されるテーブル群情報
+    let tables: ParsedTable[] = [];
 
-    // astはSelect
     const astSel: Select = ast as Select;
 
-    // astのcolumnを解析
-    const columns: ParsedColumn[] = parseColumns(astSel.columns);
+    // Selectの最終クエリの解析
+    tables.push(
+        {
+            tableName: name,
+            columns: parseColumns((astSel).columns),
+        }
+    );
 
     // astのfromを解析
     // よてい
 
     // astのwithを解析
-    
+    tables = tables.concat(parseAstWith(astSel.with));
 
-    return [{
-        tableName,
-        columns: columns,    // 追加予定
-    }];
+    return tables;
 };
