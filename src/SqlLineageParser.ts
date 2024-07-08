@@ -6,14 +6,15 @@
 
 import { SqlLineageParserParams } from './types/types.d';
 import { parseQuery } from './parseQuery/parseQuery';
-import { astList2TableList } from './astList2TableList/astList2TableList';
+import { astList2TableStructures } from './astList2QueryStructure/astList2TableList';
 
 function SqlLineageParser ({query, database = 'BigQuery'}: SqlLineageParserParams): void {
     // node-sql-parserを利用して結果を得る
     const {ast} = parseQuery({query, database});
 
     // テーブル単位の配列に変換する
-    const tableList2 = astList2TableList({astList: ast});
+    //const tableList2 = astList2TableList({astList: ast});
+    const tableList2 = astList2TableStructures({astList: ast});
 
     // 関係性を構築する
     // analyzeConnections()
@@ -30,7 +31,7 @@ export {
 // testで使用するクエリ
 // column
 //SqlLineageParser({query: 'select col1 from t1'});
-//SqlLineageParser({query: 'select cast(col1 as float64) from t1'});
+SqlLineageParser({query: 'select cast(col1 as float64) from t1'});
 //SqlLineageParser({query: 'select case col1 when 1 then "one" when 2 then "two" else "else" end from t1'});
 //SqlLineageParser({query: 'select case when col1 = 1 then "one" when col1 between 2 and 3 then "two-three" else col2 end from t1'});
 //SqlLineageParser({query: 'select case when col1 is null then "null" when col1 in (1,2) then "one_or_tow" when col1 like "3%" then "like3" else "else" end from t1'});
@@ -45,7 +46,7 @@ export {
 //SqlLineageParser({query: 'select t1.col1 from (select t2.col2 as col1 from t2) as t1'});
 //SqlLineageParser({query: 'select t1.col1, t3.col3 from (select t2.col2 as col1 from t2) as t1, (select t4.col4 as col3 from t4) as t3'});
 //SqlLineageParser({query: 'select col1 from (select col2 as col1 from t1)'});
-SqlLineageParser({query: 'with tw1 as (select t1_col2 from (select col2 as t1_col2 from t1)) select tw1_col2 from (select t1_col2 as tw1_col2 from tw1)'});
+//SqlLineageParser({query: 'with tw1 as (select t1_col2 from (select col2 as t1_col2 from t1)) select tw1_col2 from (select t1_col2 as tw1_col2 from tw1)'});
 
 // with
 //SqlLineageParser({query: 'with t2 as (select t3.col3 as t3_col3 from t3) select t1.col1 as col_a, t2.t3_col3 as col_b from t1_origin as t1, t2'});
